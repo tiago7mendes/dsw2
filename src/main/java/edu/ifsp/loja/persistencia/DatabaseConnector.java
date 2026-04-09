@@ -1,10 +1,10 @@
-package projetosoc;
+package edu.ifsp.loja.persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DataBaseConnector {
+public class DatabaseConnector {
 	static {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -18,4 +18,5 @@ public class DataBaseConnector {
 				"jdbc:mysql://localhost:3307/loja", "root", "root");
 		return conn;
 	}
+	
 }

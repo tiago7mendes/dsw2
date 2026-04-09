@@ -1,10 +1,20 @@
-package projetosoc;
+package edu.ifsp.loja.modelo;
 
 public class Cliente {
 
 	private int id;
 	private String nome;
 	private String email;
+	private boolean ativo;
+	
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 
 	public int getId() {
 		return id;
