@@ -114,6 +114,10 @@ function ordenarPorPreco() {
 	<%int totalPage = (int) Math.ceil((double) totalRegistros / form.getPageSize()); %>
 	<p>Quantidade de produtos: <%= totalRegistros %></p>
 	
+	<p>Pagina atual: <%= form.getPage() %></p>
+	
+	<a href="#" onclick="transportPage(1)">Primeira</a>
+	
 	<%if(form.getPage() != 1){ %>
 	<a href="#" onclick="movePage(-1)">Anterior</a> 
 	<%} %>
@@ -121,6 +125,8 @@ function ordenarPorPreco() {
 	<%if(form.getPage() != totalPage){ %>
 	<a href="#" onclick="movePage(1)">Próxima</a>
 	<%} %>
+	
+	<a href="#" onclick="transportPage(<%= totalPage%>)">Ultima</a>
 	<br>
 	
 	<% for(int t = 1; t <= totalPage; t++) {%>
