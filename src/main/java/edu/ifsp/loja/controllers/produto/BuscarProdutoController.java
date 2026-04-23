@@ -55,7 +55,7 @@ public class BuscarProdutoController extends HttpServlet {
 
 		if (paramPageSize != null) {
 			int pageSize = Integer.parseInt(paramPageSize);
-			if (pageSize < 0 || pageSize > 100) {
+			if (pageSize < 10 || pageSize > 100) {
 				pageSize = 10;
 			}
 			form.setPageSize(pageSize);
@@ -64,9 +64,7 @@ public class BuscarProdutoController extends HttpServlet {
 		
 		ProdutoService service = new ProdutoService();
 		List<ProdutoDTO> produtos = service.search(form);
-		int total = service.count(form);
 		request.setAttribute("produtos", produtos);
-		request.setAttribute("totalRegistros", total);
 		request.setAttribute("form", form);
 		ViewHelper.forward("produto/buscarProduto.jsp", request, response);
 	}

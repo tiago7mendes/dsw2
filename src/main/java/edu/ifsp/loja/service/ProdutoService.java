@@ -18,13 +18,5 @@ public class ProdutoService {
 				.toList();		
 		return produtos;
 	}
-	
-	public int count(BuscarProdutoForm form) {
-		return dao.count(
-		form.getDescricao(),
-		form.getPrecoMinimo(),
-		form.getPrecoMaximo()
-		);
-	}
 
 }

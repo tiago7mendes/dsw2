@@ -1,4 +1,3 @@
-<%@page import="com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="edu.ifsp.loja.controllers.produto.BuscarProdutoForm" %>
@@ -26,35 +25,6 @@ function movePage(offset) {
 	const currentPage = <%= form.getPage() %>;
 	gotoPage(currentPage + offset);
 }
-
-function transportPage(num) {
-	gotoPage(num);
-}
-
-let crescente = true;
-
-function ordenarPorPreco() {
-    const tabela = document.getElementById("tabela-produtos");
-    const tbody = tabela.querySelector("tbody");
-    const linhas = Array.from(tbody.querySelectorAll("tr"));
-
-    linhas.sort((a, b) => {
-        const precoA = parseFloat(a.children[2].innerText);
-        const precoB = parseFloat(b.children[2].innerText);
-
-        if (crescente) {
-            return precoA - precoB;
-        } else {
-            return precoB - precoA;
-        }
-    });
-
-    // Reinsere as linhas ordenadas
-    linhas.forEach(linha => tbody.appendChild(linha));
-
-    // Alterna ordem
-    crescente = !crescente;
-}
 </script>
 </head>
 <body>
@@ -71,67 +41,37 @@ function ordenarPorPreco() {
 		<label for="preco-maximo">Preço Máximo: </label>
 		<input type="number" name="precoMaximo" id="preco-maximo" value="<%= form.getPrecoMaximo() %>">
 		<br>
-
-		<input type="hidden" name="page" value="1">
 		
-		<label for="pageSize">Quantidade de Itens: </label>
-		<input type="number" name="pageSize" value="<%= form.getPageSize() %>">
-		<br>
+		<input type="hidden" name="page" value="1">
+		<input type="hidden" name="pageSize" value="<%= form.getPageSize() %>">
 
-		<button type="submit">Buscar</button>
+		<button type="submit" onsubmit="formSubmit();">Buscar</button>
 	</form>
 	
 	<%
-	int totalRegistros = 0;
 	if (request.getAttribute("produtos") != null) {
 		List<ProdutoDTO> produtos = (List<ProdutoDTO>)request.getAttribute("produtos");
-		totalRegistros = request.getAttribute("totalRegistros") != null
-				? (Integer) request.getAttribute("totalRegistros")
-				: 0;
 	%>
 	<br>
-	<table border="1" id="tabela-produtos">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Descrição</th>
-            <th onclick="ordenarPorPreco()" style="cursor:pointer;">
-                Preço
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <% for (ProdutoDTO p : produtos) { %>
-        <tr>
-            <td><%= p.id() %></td>
-            <td><%= p.descricao() %></td>
-            <td><%= p.preco() %></td>
-        </tr>
-        <% } %>
-    </tbody>
-</table>
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>Descrição</th>
+			<th>Preco</th>
+		</tr>
+		
+		<% for (ProdutoDTO p : produtos) { %>
+		<tr>
+			<td><%= p.id() %></td>
+			<td><%= p.descricao() %></td>
+			<td><%= p.preco() %></td>
+		</tr>
+		<% } %>
+		
+	</table>
 	
-	<%int totalPage = (int) Math.ceil((double) totalRegistros / form.getPageSize()); %>
-	<p>Quantidade de produtos: <%= totalRegistros %></p>
-	
-	<p>Pagina atual: <%= form.getPage() %></p>
-	
-	<a href="#" onclick="transportPage(1)">Primeira</a>
-	
-	<%if(form.getPage() != 1){ %>
 	<a href="#" onclick="movePage(-1)">Anterior</a> 
-	<%} %>
-	
-	<%if(form.getPage() != totalPage){ %>
-	<a href="#" onclick="movePage(1)">Próxima</a>
-	<%} %>
-	
-	<a href="#" onclick="transportPage(<%= totalPage%>)">Ultima</a>
-	<br>
-	
-	<% for(int t = 1; t <= totalPage; t++) {%>
-	<a href="#" onclick="transportPage(<%= t%>)">[<%= t %>]</a>
-	<%} %>	
+	<a href="#" onclick="movePage(1)">Próxima</a>	
 	<%
 	} else {
 	%>

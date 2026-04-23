@@ -70,40 +70,6 @@ public class ProdutoDAO {
 		return produtos;
 	}
 	
-	public int count(String descricao, Double precoMinimo, Double precoMaximo) {
-		int total = 0;
-
-		try {
-		Connection conn = DatabaseConnector.getConnection();
-
-		PreparedStatement ps = conn.prepareStatement(
-		"SELECT COUNT(*) AS total " +
-		"FROM produto " +
-		"WHERE descricao LIKE ? " +
-		"AND preco BETWEEN ? AND ?"
-		);
-
-		ps.setString(1, "%" + (descricao != null ? descricao : "") + "%");
-		ps.setDouble(2, precoMinimo != null ? precoMinimo : 0.0);
-		ps.setDouble(3, precoMaximo != null ? precoMaximo : Double.MAX_VALUE);
-
-		ResultSet rs = ps.executeQuery();
-
-		if (rs.next()) {
-		total = rs.getInt("total");
-		}
-
-		rs.close();
-		ps.close();
-		conn.close();
-
-		} catch (SQLException e) {
-		throw new DataAccessException(e);
-		}
-
-		return total;
-		}
-	
 	public List<Produto> findPaged(
 			int page, int pageSize, 
 			String descricao, double precoMinimo, double precoMaximo) {
